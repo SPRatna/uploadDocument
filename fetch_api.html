@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Form | With Angular JS</title>
+  </head>
+  <body>
+    <!-- Grey with black text -->
+    <nav class="navbar navbar-expand-sm bg-light navbar-light">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="register.html">Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="form.html">Upload</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="fetch_api.html">Fetch API BY JS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="fetch_api_angular.html">Fetch API BY Angular</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="container">
+      <div class="row justify-content-center mt-5">
+        <div class="col-md-6 col-12 mt-5">
+          <div class="card shadow">
+            <div class="card-header bg-info">
+            <ul id="fetchDocument"></ul>
+            <button class="btn btn-warning btn-sm" id="myBtn">Test Button</button>
+            <button class="btn btn-info btn-sm">Fetch Data</button>
+          </div>
+          <div class="card-body" id="myContent">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+  
+  console.log('This page is for fetch api in java script');
+  
+  let myBtn = document.getElementById('myBtn');
+
+  let myContent = document.getElementById('myContent');
+  
+  // function getData(){
+  //   url = "test.txt";
+  //   fetch(url).then((response)=>{
+  //     console.log('First statement');
+  //     return response.text();
+  //   }).then((data)=>{
+  //     console.log('Second statement');
+  //     console.log(data);
+  //   })
+  // }
+  // console.log('Before getData statement');
+  // getData();
+  // console.log('After getData statement');
+
+  function postData(){
+    url="http://dummy.restapiexample.com/api/v1/create";
+    data='{"name":"test","salary":"123","age":"23"}';
+    params = {
+      method:'post',
+      header :{
+        'Content-Type':'application/json'
+      },
+      //body:JSON.stringify(data)
+      body:data
+    }
+    fetch(url, params).then((response)=>{
+      return response.json();
+    }).then((data)=>{
+      console.log(data);
+    });
+  }
+  postData();
+  </script>
+  
+</body>
+</html>

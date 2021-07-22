@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <title>Form | With Angular JS</title>
+  </head>
+  <body ng-app="myApp" ng-Controller="myController">
+    <!-- Grey with black text -->
+    <nav class="navbar navbar-expand-sm bg-light navbar-light">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="register.html">Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="form.html">Upload</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="fetch_api.html">Fetch API</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="fetch_api_angular.html">Fetch API BY Angular</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="container">
+      <div class="row justify-content-center mt-5">
+        <div class="col-md-6 col-12 mt-5">
+          <form id="myForm"  ng-submit="saveFile()" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="doctype">Document Type</label>
+              <select class="form-control form-control-sm"  name="doctype" id="doctype" ng-model="uploadDoc.doctype">
+                <option selected value="" disabled>Select Document</option>
+                <option value="offer_letter">Offer Letter</option>
+                <option value="id_proof">Id Proof</option>
+                <option value="invoice">Invoice</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Document Name<span class="text-danger">*</span></label>
+              <input type="text" name="document_name" class="form-control form-control-sm" ng-model="uploadDoc.document_name" required>
+              <div ng-show="Form.docName.$invalid">
+                <p ng-show="Form.docName.$error.required" class="text-danger ml-2" style="font-size:11px;">
+                  Name Field is required *
+                </p>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="docDescription">Description</label>
+              <textarea class="form-control form-control-sm" rows="3" placeholder="Enter ..." name="docDescription" ng-model="uploadDoc.docDescription"></textarea>
+              <div ng-show="Form.docDescription.$invalid">
+                <p ng-show="Form.docDescription.$error.required" class="text-danger ml-2" style="font-size:11px;">
+                  This field is required *
+                </p>
+              </div>
+            </div>
+            <label>Upload Document:</label>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="document" ng-model="upload_doc.document" onchange="openFile(event)" name="document">
+              <label class="custom-file-label" for="customFile">{{selectedFileName }}</label>
+            </div>
+            <div class="form-group float-left mt-3">
+              <button type="submit" class="btn btn-info btn-sm" name="submit" id="upload-button">Submit</button>
+              <button type="reset" class="btn btn-warning btn-sm" name="cancel">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Ajax JavaScript File Upload Logic -->
+    <script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function($scope, $http)
+    {
+    
+    $scope.selectedFileName = 'Choose File';
+
+
+    openFile = function(event) {
+
+    var input = event.target;
+    var reader = new FileReader();
+    reader.onload = function(){
+    docDetail = btoa(reader.result);
+    $scope.uploadDoc.document = docDetail;
+    console.log("Logo data : ", $scope.uploadDoc.document);
+    };
+    
+    
+    reader.readAsBinaryString(input.files[0]);
+    
+    $scope.selectedFileName  = input.files[0].name;
+    
+    $scope.$apply();
+    // alert('The file has been uploaded successfully.');
+    }
+
+
+
+    $scope.saveFile = function (){
+      // alert("submitting...");
+    console.log($scope.uploadDoc);
+    
+
+    var HEADER_DATA = {"authKey":"1ce79427-7aa7-4481-a645-5036f3ac5efa",  "authSecret":"YHpHW2WJf1", "username":"jayant","password":"jayant"};
+    $http({
+    method  :  "POST",
+    url     :  "http://localhost:6001/createdocumentmaster",
+    header  : HEADER_DATA,
+    data    :  $scope.uploadDoc
+    }).then(function mySuccess(response) {
+    $scope.isProgessBarVisible = false;
+    if(response.data != null)
+    {
+    console.log("Thanks: ",response);
+    alert("success- "+response);
+    }
+    else {
+    alert("error- "+response);
+    }
+    
+    }, function myError(response) {
+    $scope.isProgessBarVisible = false;
+    alert("error- "+response);
+    });
+    
+    
+
+
+    }
+     
+
+
+
+
+
+    });
+    </script>
+    }
+  </body>
+</html>
